@@ -34,19 +34,6 @@ public class ExcelPrinter implements CommandLineRunner {
                                 .doReadSync();
         }
 
-        //Chuyển format gốc sang format mới
-//        List<ExcelExportDTO> export = new ArrayList<>();
-//        for(ExcelRowDTO raw : rawData) {
-//            ExcelExportDTO exp = new ExcelExportDTO();
-//            exp.setId(raw.getId());
-//            exp.setEmpId(raw.getEmpId());
-//            exp.setStartTime(raw.getStartTime());
-//            exp.setEndTime(raw.getEndTime());
-//            exp.setDate(raw.getDate());
-//            exp.setCheckinTime(raw.getCheckedTime());
-//            exp.setCheckoutTime(raw.getCheckedTime());
-//            export.add(exp);
-//        }
 
         //Chuyển đổi format gốc sang format mới
         List<ExcelExportDTO> export = AttendanceTransformer.transform(rawData);
