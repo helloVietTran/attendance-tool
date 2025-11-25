@@ -1,9 +1,9 @@
 package com.kits.tool.service;
 
-import com.kits.tool.entity.DatabaseExportDTO;
-import com.kits.tool.entity.DatabaseRowDTO;
-import com.kits.tool.dto.ExcelExportDTO;
-import com.kits.tool.dto.ExcelRowDTO;
+import com.kits.tool.entity.attendance_entity.DatabaseExportDTO;
+import com.kits.tool.entity.attendance_entity.DatabaseRowDTO;
+import com.kits.tool.dto.attendancedto.ExcelExportDTO;
+import com.kits.tool.dto.attendancedto.ExcelRowDTO;
 import com.kits.tool.repository.AttendanceLogRepository;
 import com.kits.tool.repository.ProcessLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ExcelService {
+public class LogService {
     @Autowired
     private ProcessLogRepository processLogRepository;
     @Autowired

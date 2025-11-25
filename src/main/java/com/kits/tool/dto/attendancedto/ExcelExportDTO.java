@@ -1,11 +1,9 @@
-package com.kits.tool.dto;
+package com.kits.tool.dto.attendancedto;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ExcelExportDTO {
     @ExcelIgnore

@@ -1,4 +1,4 @@
-package com.kits.tool.entity;
+package com.kits.tool.entity.attendance_entity;
 
 import jakarta.persistence.*;
 
