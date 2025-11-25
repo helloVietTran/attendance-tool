@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông báo lỗi timesheet - Quên chấm công</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 14px sollid; color: #333;}
+        .container { padding: 15px; border: 2px solid #ddd; max-width: 600px; margin: 0 auto; background: lightyellow;
+        border-radius: 5px;}
+        .error-detail { color: #d9534f; font-weight: bold; font-size: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>Dear <b th:text="${username}"></b>, ID: <span th:text="${userId}"></span></p>
+    <p>Khung làm việc: <span th:text="${workingShift}"></span></p>
+
+    <br>
+
+    <p class="warning">
+        Hệ thống ghi nhận bạn đã **quên chấm công** (Check-in/Check-out) vào ngày:
+        <b th:text="${date}"></b>
+    </p>
+
+    <br>
+    <p>Vui lòng kiểm tra và giải trình (hoặc bổ sung timesheet) trên hệ thống.</p>
+</div>
+</body>
+</html>

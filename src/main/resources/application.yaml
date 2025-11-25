@@ -1,3 +1,17 @@
 spring:
-  application:
-    name: tool
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: @gmail.com
+    password: app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    default-encoding: UTF-8
+app:
+  file:
+    output:
+      mail-log: "logs/mail_sending_history.xlsx"
