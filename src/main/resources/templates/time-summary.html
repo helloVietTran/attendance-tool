@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mail chốt công</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 14px sollid; color: #333; line-height: 1.6; }
+        .container { max-width: 600px; padding: 20px; border: 2px solid #e0e0e0; margin: 0 auto;
+        background: lightyellow;
+         border-radius: 5px;}
+        .highlight { color: #1e88e5; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>Dear <b th:text="${username}"></b>, ID: <span th:text="${userId}"></span></p>
+    <p>Khung làm việc: <span th:text="${workingShift}"></span></p>
+
+    <hr>
+
+    <p>Ngày công trong tháng <span th:text="${monthYear}"></span> là
+        <b class="highlight" th:text="${theoreticalDays}"</b> ngày công
+    </p>
+
+    <div>Tổng số ngày làm việc tại công ty: <b th:text="${actualDays}"></b> ngày</div>
+    <div>Tổng số ngày nghỉ: <b th:text="${leaveDays}"></b> ngày</div>
+
+    <div>
+        Thời gian còn thiếu (do đi muộn/về sớm/quên):
+        <b style="color: #d9534f;" th:text="${missingHoursStr}"></b>
+    </div>
+
+    <br>
+    <div style="font-weight: bold; font-size: 15px;">
+        Tổng thời gian làm việc: <span class="highlight" th:text="${totalHoursStr}"></span>
+    </div>
+</div>
+</body>
+</html>
