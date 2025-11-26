@@ -1,7 +1,7 @@
-package com.kits.tool.excel_process;
+package com.kits.tool.service.excel;
 
-import com.kits.tool.dto.attendancedto.ExcelExportDTO;
-import com.kits.tool.dto.attendancedto.ExcelRowDTO;
+import com.kits.tool.dto.ExcelExportDTO;
+import com.kits.tool.dto.ExcelRowDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,19 +12,16 @@ import java.util.Map;
 //Thực hiện chuyển đổi từ format checkedTime cũ sang format checkInTime và checkOutTime mới
 public class AttendanceTransformer {
     public static List<ExcelExportDTO> transform(List<ExcelRowDTO> rawDatas) {
-        //Dùng LinkedHashMap để vừa lưu key theo id, vừa giữ thứ tự xuất hiện
+        // lưu key theo id và giữ thứ tự xuất hiện
         Map<String, ExcelExportDTO> map = new LinkedHashMap<>();
 
-        //Duyệt qua các bản ghi
         for(ExcelRowDTO rawData : rawDatas) {
-            //Format về chuỗi để so sánh
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             String timeStr = timeFormat.format(rawData.getCheckedTime());
 
             //Lọc theo empId và date
             String key = rawData.getEmpId() + "_" + rawData.getDate();
 
-            //Lấy ra data của key
             ExcelExportDTO newData = map.get(key);
 
             if(newData == null) {
@@ -41,7 +38,6 @@ public class AttendanceTransformer {
                     newData.setCheckoutId(rawData.getId());
                 }
 
-                //Add data vào map theo empId
                 map.put(key, newData);
             } else {
                 // đã có record cho empId + date → gán checkout

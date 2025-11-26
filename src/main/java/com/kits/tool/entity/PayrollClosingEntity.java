@@ -1,10 +1,9 @@
-package com.kits.tool.entity.payrollclosing_entity;
+package com.kits.tool.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.naming.Name;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

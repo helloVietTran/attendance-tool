@@ -1,4 +1,4 @@
-package com.kits.tool.entity.holiday_entity;
+package com.kits.tool.entity;
 
 import jakarta.persistence.*;
 

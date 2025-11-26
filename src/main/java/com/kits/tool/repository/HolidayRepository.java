@@ -1,6 +1,6 @@
 package com.kits.tool.repository;
 
-import com.kits.tool.entity.holiday_entity.HolidayEntity;
+import com.kits.tool.entity.HolidayEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

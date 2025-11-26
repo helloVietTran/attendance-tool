@@ -1,9 +1,9 @@
 package com.kits.tool.service;
 
-import com.kits.tool.entity.attendance_entity.DatabaseExportDTO;
-import com.kits.tool.entity.attendance_entity.DatabaseRowDTO;
-import com.kits.tool.dto.attendancedto.ExcelExportDTO;
-import com.kits.tool.dto.attendancedto.ExcelRowDTO;
+import com.kits.tool.entity.AttendanceLog;
+import com.kits.tool.entity.ProcessLog;
+import com.kits.tool.dto.ExcelExportDTO;
+import com.kits.tool.dto.ExcelRowDTO;
 import com.kits.tool.repository.AttendanceLogRepository;
 import com.kits.tool.repository.ProcessLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,9 @@ public class LogService {
 
     public void saveRawFromExcel(List<ExcelRowDTO> rawDatas) {
         for(ExcelRowDTO rawData : rawDatas) {
-            DatabaseRowDTO dbRawLog = new DatabaseRowDTO();
+            ProcessLog dbRawLog = new ProcessLog();
 
-            //Tìm theo logId để lưu record theo thời gian
-            Optional<DatabaseRowDTO> row = processLogRepository.findById(dbRawLog.getId());
+            Optional<ProcessLog> row = processLogRepository.findById(dbRawLog.getId());
             if(row.isEmpty()){
                 dbRawLog.setId(rawData.getId());
                 dbRawLog.setEmpId(rawData.getEmpId());
@@ -48,7 +47,7 @@ public class LogService {
 
     public void saveNewFromExcel(List<ExcelExportDTO> newDatas) {
         for(ExcelExportDTO newData : newDatas) {
-            DatabaseExportDTO dbNewLog = new DatabaseExportDTO();
+            AttendanceLog dbNewLog = new AttendanceLog();
             dbNewLog.setEmpId(newData.getEmpId());
             dbNewLog.setProcessLogInId(newData.getCheckinId());
             dbNewLog.setProcessLogOutId(newData.getCheckoutId());

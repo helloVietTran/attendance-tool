@@ -1,8 +1,8 @@
 package com.kits.tool.service;
 
-import com.kits.tool.dto.payrolldto.DateClosingDTO;
-import com.kits.tool.dto.payrolldto.YearMonthClosingDTO;
-import com.kits.tool.entity.payrollclosing_entity.PayrollClosingEntity;
+import com.kits.tool.dto.DateClosingDTO;
+import com.kits.tool.dto.YearMonthClosingDTO;
+import com.kits.tool.entity.PayrollClosingEntity;
 import com.kits.tool.repository.PayRollClosingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

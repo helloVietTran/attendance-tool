@@ -1,22 +1,22 @@
-package com.kits.tool.entity.attendance_entity;
+package com.kits.tool.entity;
 
+import com.kits.tool.entity.compkey.AttendanceLogCompositeKey;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "AttendanceLog")
-@IdClass(CompositeKey.class)
-public class DatabaseExportDTO {
+@IdClass(AttendanceLogCompositeKey.class)
+public class AttendanceLog {
     @Id
     @Column(name = "employeeId")
     private int empId;
 
     @ManyToOne
     @JoinColumn(name = "processLogInId", referencedColumnName = "id",nullable = true, insertable=false, updatable=false)
-    DatabaseRowDTO databaseRowDTO1;
+    ProcessLog processLog1;
 
     @Column(name = "processLogInId")
     private Integer processLogInId;
@@ -66,12 +66,12 @@ public class DatabaseExportDTO {
         this.processDate = processDate;
     }
 
-    public DatabaseRowDTO getDatabaseRowDTO1() {
-        return databaseRowDTO1;
+    public ProcessLog getDatabaseRowDTO1() {
+        return processLog1;
     }
 
-    public void setDatabaseRowDTO1(DatabaseRowDTO databaseRowDTO1) {
-        this.databaseRowDTO1 = databaseRowDTO1;
+    public void setDatabaseRowDTO1(ProcessLog processLog1) {
+        this.processLog1 = processLog1;
     }
 
     public LocalTime getCheckinTime() {
@@ -89,10 +89,4 @@ public class DatabaseExportDTO {
     public void setCheckoutTime(LocalTime checkoutTime) {
         this.checkoutTime = checkoutTime;
     }
-}
-
-//Set composite key cho cặp khóa empId và processDate
-class CompositeKey implements Serializable {
-    private int empId;
-    private LocalDate processDate;
 }

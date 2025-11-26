@@ -2,8 +2,8 @@ package com.kits.tool.service;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.kits.tool.dto.holidaydto.HolidayDTO;
-import com.kits.tool.entity.holiday_entity.HolidayEntity;
+import com.kits.tool.dto.HolidayDTO;
+import com.kits.tool.entity.HolidayEntity;
 import com.kits.tool.repository.HolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -61,7 +61,7 @@ public class HolidayImportService {
                 HolidayEntity holiday = new HolidayEntity();
                 holiday.setHolidayDate(date);
                 holiday.setDetail("Weekend Day");
-                holiday.setType(HolidayEntity.HolidayType.Company); // hoặc Others tùy quy định
+                holiday.setType(HolidayEntity.HolidayType.Company);
                 holidayRepository.save(holiday);
             }
             date = date.plusDays(1);
