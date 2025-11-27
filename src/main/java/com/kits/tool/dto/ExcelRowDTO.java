@@ -5,6 +5,9 @@ import com.alibaba.excel.annotation.format.DateTimeFormat;
 import lombok.Data;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Data
@@ -39,5 +42,17 @@ public class ExcelRowDTO {
     @ExcelProperty("CHECKED TIME")
     @DateTimeFormat("HH:mm")
     private Date checkedTime;
+
+    public LocalTime getStartTimeAsLocal() {
+        return LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    public LocalTime getEndTimeAsLocal() {
+        return LocalTime.parse(endTime, DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    public LocalDate getDateAsLocal() {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
 }
 
