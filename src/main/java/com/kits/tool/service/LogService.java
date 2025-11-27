@@ -38,7 +38,8 @@ public class LogService {
                 dbRawLog.setStartTime(LocalTime.parse(rawData.getStartTime(), timeFmt));
                 dbRawLog.setEndTime(LocalTime.parse(rawData.getEndTime(),timeFmt));
                 dbRawLog.setDate(LocalDate.parse(rawData.getDate(),dateFmt));
-                dbRawLog.setCheckedTime(LocalTime.parse(sdf.format(rawData.getCheckedTime()),timeFmt));
+                // checkedTime giờ là String, parse trực tiếp
+                dbRawLog.setCheckedTime(LocalTime.parse(rawData.getCheckedTime(),timeFmt));
             }
 
             processLogRepository.save(dbRawLog);
@@ -49,11 +50,23 @@ public class LogService {
         for(ExcelExportDTO newData : newDatas) {
             AttendanceLog dbNewLog = new AttendanceLog();
             dbNewLog.setEmpId(newData.getEmpId());
-            dbNewLog.setProcessLogInId(newData.getCheckinId());
-            dbNewLog.setProcessLogOutId(newData.getCheckoutId());
             dbNewLog.setProcessDate(LocalDate.parse(newData.getDate(),dateFmt));
-            dbNewLog.setCheckinTime(LocalTime.parse(newData.getCheckinTime(),timeFmt));
-            dbNewLog.setCheckoutTime(LocalTime.parse(newData.getCheckoutTime(),timeFmt));
+            
+            // Set checkin ID và time
+            if(newData.getCheckinId() > 0) {
+                dbNewLog.setProcessLogInId(newData.getCheckinId());
+            }
+            if(newData.getCheckinTime() != null) {
+                dbNewLog.setCheckinTime(LocalTime.parse(newData.getCheckinTime(),timeFmt));
+            }
+            
+            // Set checkout ID và time (có thể null nếu chưa checkout)
+            if(newData.getCheckoutId() > 0) {
+                dbNewLog.setProcessLogOutId(newData.getCheckoutId());
+            }
+            if(newData.getCheckoutTime() != null) {
+                dbNewLog.setCheckoutTime(LocalTime.parse(newData.getCheckoutTime(),timeFmt));
+            }
 
             attendanceLogRepository.save(dbNewLog);
         }

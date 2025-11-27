@@ -14,9 +14,11 @@ import com.kits.tool.dto.ExcelRowDTO;
 import com.kits.tool.dto.DateClosingDTO;
 import com.kits.tool.dto.YearMonthClosingDTO;
 import com.kits.tool.service.CalendarService;
+import com.kits.tool.service.ForgotCheckoutNotificationService;
 import com.kits.tool.service.LogService;
 import com.kits.tool.service.HolidayImportService;
 import com.kits.tool.service.PayrollClosingService;
+import com.kits.tool.service.WorkTimeAnalysisService;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
@@ -37,6 +39,12 @@ public class ToolApplication implements CommandLineRunner {
 
 	@Autowired
 	CalendarService calendarService;
+
+	@Autowired
+	WorkTimeAnalysisService workTimeAnalysisService;
+
+	@Autowired
+	ForgotCheckoutNotificationService forgotCheckoutNotificationService;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -61,6 +69,17 @@ public class ToolApplication implements CommandLineRunner {
 
 		logService.saveRawFromExcel(rawData);//Lưu vào db dưới dạng format gốc
 		logService.saveNewFromExcel(export);//Lưu vào db dưới dạng format mới
+		
+		// Phân tích thời gian làm việc
+		workTimeAnalysisService.analyzeAndSave(export);
+		System.out.println("✅ Đã phân tích và lưu dữ liệu vào DailyWorkTimeAnalysis");
+
+		// Phát hiện và lưu log quên checkout
+		forgotCheckoutNotificationService.detectForgotCheckout(rawData, export);
+		
+		// Gửi email cảnh báo (tối đa 3 lần, mỗi ngày 1 lần)
+		forgotCheckoutNotificationService.sendPendingNotifications(rawData);
+		System.out.println("✅ Đã xử lý email cảnh báo quên checkout");
 
 		/*================================= Xử lý lịch chốt công =================================*/
 

@@ -16,8 +16,8 @@ public class AttendanceTransformer {
         Map<String, ExcelExportDTO> map = new LinkedHashMap<>();
 
         for(ExcelRowDTO rawData : rawDatas) {
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            String timeStr = timeFormat.format(rawData.getCheckedTime());
+            // checkedTime giờ là String, không cần format nữa
+            String timeStr = rawData.getCheckedTime();
 
             //Lọc theo empId và date
             String key = rawData.getEmpId() + "_" + rawData.getDate();

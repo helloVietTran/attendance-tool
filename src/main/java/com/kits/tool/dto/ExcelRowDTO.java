@@ -38,6 +38,6 @@ public class ExcelRowDTO {
 
     @ExcelProperty("CHECKED TIME")
     @DateTimeFormat("HH:mm")
-    private Date checkedTime;
+    private String checkedTime;  // Đổi từ Date → String để tránh timezone issue
 }
 
