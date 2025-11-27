@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,21 +25,35 @@ public class LogService {
     @Autowired
     private AttendanceLogRepository attendanceLogRepository;
 
-    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     public void saveRawFromExcel(List<ExcelRowDTO> rawDatas) {
         for(ExcelRowDTO rawData : rawDatas) {
+            //Tách giờ phút: từ dạng Date gốc về dạng LocalTime
+            Date fullTime = rawData.getCheckedTime();
+            LocalTime rawTime = fullTime
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalTime();
+
+            //Tách ngày: từ dạng Date gốc về dạng LocalDate
+            Date fullDate = rawData.getDate();
+            LocalDate rawDate = fullDate
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
             ProcessLog dbRawLog = new ProcessLog();
 
             Optional<ProcessLog> row = processLogRepository.findById(dbRawLog.getId());
             if(row.isEmpty()){
                 dbRawLog.setId(rawData.getId());
                 dbRawLog.setEmpId(rawData.getEmpId());
-                dbRawLog.setStartTime(LocalTime.parse(rawData.getStartTime(), timeFmt));
-                dbRawLog.setEndTime(LocalTime.parse(rawData.getEndTime(),timeFmt));
-                dbRawLog.setDate(LocalDate.parse(rawData.getDate(),dateFmt));
+                dbRawLog.setStartTime(rawTime);
+                dbRawLog.setEndTime(rawTime);
+                dbRawLog.setDate(rawDate);
                 dbRawLog.setCheckedTime(LocalTime.parse(sdf.format(rawData.getCheckedTime()),timeFmt));
             }
 
@@ -47,13 +63,14 @@ public class LogService {
 
     public void saveNewFromExcel(List<ExcelExportDTO> newDatas) {
         for(ExcelExportDTO newData : newDatas) {
+
             AttendanceLog dbNewLog = new AttendanceLog();
             dbNewLog.setEmpId(newData.getEmpId());
             dbNewLog.setProcessLogInId(newData.getCheckinId());
             dbNewLog.setProcessLogOutId(newData.getCheckoutId());
-            dbNewLog.setProcessDate(LocalDate.parse(newData.getDate(),dateFmt));
-            dbNewLog.setCheckinTime(LocalTime.parse(newData.getCheckinTime(),timeFmt));
-            dbNewLog.setCheckoutTime(LocalTime.parse(newData.getCheckoutTime(),timeFmt));
+            dbNewLog.setProcessDate(newData.getDate());
+            dbNewLog.setCheckinTime(newData.getCheckinTime());
+            dbNewLog.setCheckoutTime(newData.getCheckoutTime());
 
             attendanceLogRepository.save(dbNewLog);
         }

@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.format.DateTimeFormat;
 import lombok.Data;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -25,19 +26,19 @@ public class ExcelRowDTO {
     private String email;
 
     @ExcelProperty("START")
-    @DateTimeFormat("HH:mm")
-    private String startTime;
+//    @DateTimeFormat("HH:mm")
+    private Date startTime;
 
     @ExcelProperty("END")
-    @DateTimeFormat("HH:mm")
-    private String endTime;
+//    @DateTimeFormat("HH:mm")
+    private Date endTime;
 
     @ExcelProperty("DATE")
-    @DateTimeFormat("dd/MM/yyyy")
-    private String date;
+//    @DateTimeFormat("dd/MM/yyyy")
+    private Date date;
 
     @ExcelProperty("CHECKED TIME")
-    @DateTimeFormat("HH:mm")
+//    @DateTimeFormat("HH:mm")
     private Date checkedTime;
 }
 

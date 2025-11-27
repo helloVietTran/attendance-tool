@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,10 +40,13 @@ public class HolidayImportService {
         }
 
         for (HolidayDTO dto : dtos) {
-            LocalDate date = LocalDate.parse(dto.getHolidayDate(), DateTimeFormatter.ofPattern("yyyy/M/d"));
-            if (!holidayRepository.existsByHolidayDate(date)) {
+            Date fullDate = dto.getHolidayDate();
+            LocalDate rawDate = fullDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+//            LocalDate date = LocalDate.parse(dto.getHolidayDate(), DateTimeFormatter.ofPattern("yyyy/M/d"));
+            if (!holidayRepository.existsByHolidayDate(rawDate)) {
                 HolidayEntity holiday = new HolidayEntity();
-                holiday.setHolidayDate(date);
+                holiday.setHolidayDate(rawDate);
                 holiday.setDetail(dto.getDetail());
                 holiday.setType(HolidayEntity.HolidayType.valueOf(dto.getType())); // Public, Company, Others
                 holidayRepository.save(holiday);

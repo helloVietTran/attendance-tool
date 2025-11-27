@@ -21,24 +21,25 @@ public class PayrollClosingService {
     public List<DateClosingDTO> fromRawtoDate(List<YearMonthClosingDTO> excelRows) throws Exception {
         List<DateClosingDTO> result = new ArrayList<>();
         for (YearMonthClosingDTO row : excelRows) {
+
             for(int m = 1; m <= 12; m++) {
                 //Xử lí lấy số ngày theo tháng
                 YearMonth ym = YearMonth.of(row.getYear(), m);
                 int days = ym.lengthOfMonth();
                 int day = getClosingDay(row, m);
-                String date = "";
+                LocalDate date = LocalDate.now();
 
                 if(m==2){
                     if(day>0 && day<=29){
-                        date = LocalDate.of(row.getYear(), m, day).toString();
+                        date = LocalDate.of(row.getYear(), m, day);
                     }
                 } else if(days == 31){
                     if(day>0 && day<=31){
-                        date = LocalDate.of(row.getYear(), m, day).toString();
+                        date = LocalDate.of(row.getYear(), m, day);
                     }
                 } else if(days == 30) {
                     if(day>0 && day<=30){
-                        date = LocalDate.of(row.getYear(), m, day).toString();
+                        date = LocalDate.of(row.getYear(), m, day);
                     }
                 } else {
                     throw new Exception("Ngày không hợp lệ tại tháng "+m+" năm "+row.getYear());
@@ -75,7 +76,7 @@ public class PayrollClosingService {
 
         for(DateClosingDTO dto : dates) {
             //Ngày chốt công
-            LocalDate closingDate = LocalDate.parse(dto.getClosingDate());
+            LocalDate closingDate = dto.getClosingDate();
             //Ngày đầu tháng -> tính cho phần tử đầu của danh sách
             LocalDate firstDayofMonth = closingDate.withDayOfMonth(1);
 
@@ -90,7 +91,7 @@ public class PayrollClosingService {
                 prcEntity.setEndDate(closingDate);
             } else {
                 //Ngày chốt công tháng trước
-                LocalDate previousPrcDate = LocalDate.parse(dates.get(dates.indexOf(dto)-1).getClosingDate());
+                LocalDate previousPrcDate = dates.get(dates.indexOf(dto)-1).getClosingDate();
                 //Ngày bắt đầu tính công = Ngày chốt tháng trước + 1 (trừ tháng đầu của danh sách)
                 LocalDate startingDate =  previousPrcDate.plusDays(1);
 
