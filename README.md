@@ -10,7 +10,7 @@ Chỉ giữ 5 file mới nhất mỗi loại báo cáo (NGAY, THANG, QUY, NAM)
 Tự động xóa file cũ khi vượt quá giới hạn số lượng
 File được đặt tên theo format: ChamCong_[LOAI]_[KY]_[THOIGIAN].xlsx
 
-3. Thống kê 
+3. Nội dung thống kê 
 
 Mỗi nhân viên sẽ có:
 Tổng số ngày làm việc
