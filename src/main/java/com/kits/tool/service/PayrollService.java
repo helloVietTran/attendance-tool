@@ -69,19 +69,30 @@ public class PayrollService {
         int standardDays = countBusinessDays(cutoffDate.plusDays(1), endOfMonth);
         int assumedWorkMinutes = standardDays * STANDARD_MINUTES_PER_DAY;
 
-        //Trừ nợ tháng trước
+        //Truy vấn nợ tháng trước
         int prevMonth = (month == 1) ? 12 : month - 1;
         int prevYear = (month == 1) ? year - 1 : year;
 
-        Integer debtFromLastMonth = payrollRepo.findByEmployeeIdAndMonthAndYear(employeeId, prevMonth, prevYear)
-                .map(MonthlyPayroll::getDebtMinutesNextMonth) // Lấy số phút nợ
-                .orElse(0);
+        System.out.println(">> Đang tìm dữ liệu nợ tháng: " + prevMonth + "/" + prevYear);
+
+        MonthlyPayroll prevPayroll = payrollRepo.findByEmployeeIdAndMonthAndYear(employeeId, prevMonth, prevYear)
+                .orElse(null);
+        int debtFromLastMonth = 0;
+        if (prevPayroll == null) {
+            //Nếu không tìm thấy tháng trước, coi như không nợ
+            System.out.println("Không tìm thấy bảng lương tháng " + prevMonth + ". Mặc định nợ = 0.");
+        } else {
+            // Có bản ghi, check null cho field debtMinutesNextMonth
+            debtFromLastMonth = (prevPayroll.getDebtMinutesNextMonth() == null) ? 0 : prevPayroll.getDebtMinutesNextMonth();
+            System.out.println("Tìm thấy bảng lương tháng trước. Số phút nợ: " + debtFromLastMonth);
+        }
 
         //TỔNG PHÚT ĐƯỢC TRẢ LƯƠNG
         int totalPaidMinutes = realWorkMinutes + assumedWorkMinutes - debtFromLastMonth;
 
         //Tính nợ cho tháng sau
         Integer lackMinutesAfterCutoff = dailyRepo.sumLackMinutes(employeeId, cutoffDate.plusDays(1), endOfMonth);
+        if (lackMinutesAfterCutoff == null) lackMinutesAfterCutoff = 0;
 
         //LƯU KẾT QUẢ
         MonthlyPayroll payroll = payrollRepo.findByEmployeeIdAndMonthAndYear(employeeId, month, year)
@@ -96,7 +107,12 @@ public class PayrollService {
 
         payrollRepo.save(payroll);
 
-        System.out.println("Đã tính xong lương tháng " + month + ". Công hưởng: " + (totalPaidMinutes/480.0) + " công. Nợ tháng sau: " + lackMinutesAfterCutoff + " phút.");
+        System.out.println(">> KẾT QUẢ: Tổng phút lương = " + totalPaidMinutes
+                + " (Thực tế: " + realWorkMinutes
+                + " + Giả định: " + assumedWorkMinutes
+                + " - Trừ nợ cũ: " + debtFromLastMonth + ")");
+        System.out.println(">> Nợ đẩy sang tháng sau: " + lackMinutesAfterCutoff);
+        System.out.println("------------------------------------------------");
     }
 
     // Hàm đếm số ngày làm việc (trừ T7, CN)

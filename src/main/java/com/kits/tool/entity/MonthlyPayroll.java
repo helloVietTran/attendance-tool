@@ -22,6 +22,5 @@ public class MonthlyPayroll {
     private Integer totalPaidMinutes;
     private Integer debtMinutesNextMonth;
 
-    public MonthlyPayroll(){}
 
 }
