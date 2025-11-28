@@ -22,7 +22,8 @@ public class LocalTimeConverter implements Converter<LocalTime> {
             if (cellData.getType() == CellDataTypeEnum.NUMBER) {
                 // Excel lưu giờ dạng fraction of day
                 double fraction = cellData.getNumberValue().doubleValue();
-                int totalSeconds = (int) (fraction * 24 * 60 * 60);
+                // Làm tròn để tránh lỗi floating point precision
+                long totalSeconds = Math.round(fraction * 24 * 60 * 60);
                 return LocalTime.ofSecondOfDay(totalSeconds);
             } else {
                 // Nếu là chuỗi thì parse theo format

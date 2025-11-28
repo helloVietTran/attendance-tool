@@ -2,16 +2,14 @@ package com.kits.tool.dto;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.kits.tool.service.excel.LocalTimeConverter;
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalTime;
 
 @Data
 public class ExcelRowDTO {
-    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @ExcelProperty("ID")
     private int id;
@@ -25,20 +23,17 @@ public class ExcelRowDTO {
     @ExcelProperty("EMAIL")
     private String email;
 
-    @ExcelProperty("START")
-//    @DateTimeFormat("HH:mm")
-    private Date startTime;
+    @ExcelProperty(value = "START", converter = LocalTimeConverter.class)
+    private LocalTime startTime;
 
-    @ExcelProperty("END")
-//    @DateTimeFormat("HH:mm")
-    private Date endTime;
+    @ExcelProperty(value = "END", converter = LocalTimeConverter.class)
+    private LocalTime endTime;
 
     @ExcelProperty("DATE")
-//    @DateTimeFormat("dd/MM/yyyy")
-    private Date date;
+    @DateTimeFormat("dd/MM/yyyy")
+    private LocalDate date;
 
-    @ExcelProperty("CHECKED TIME")
-//    @DateTimeFormat("HH:mm")
-    private Date checkedTime;
+    @ExcelProperty(value = "CHECKED TIME", converter = LocalTimeConverter.class)
+    private LocalTime checkedTime;
 }
 
