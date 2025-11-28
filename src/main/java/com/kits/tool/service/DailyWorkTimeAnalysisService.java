@@ -81,7 +81,7 @@ public class DailyWorkTimeAnalysisService {
         analysis.setInOfficeMinutes(inOfficeMinutes);
         analysis.setWorkTimeMinutes(workTimeMinutes);
         analysis.setLackMinutes(lackMinutes);
-        analysis.setOverTimeMinutes(0); // Không xử lý overtime
+        analysis.setOverTimeMinutes(0);
 
         dailyWorkTimeAnalysisRepository.save(analysis);
     }

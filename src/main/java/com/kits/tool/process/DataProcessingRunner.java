@@ -5,7 +5,6 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.kits.tool.dto.*;
 import com.kits.tool.service.*;
 import com.kits.tool.service.excel.AttendanceTransformer;
-import com.kits.tool.service.excel.ExcelListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -82,6 +81,5 @@ public class DataProcessingRunner implements CommandLineRunner {
 
         System.out.println("Daily work time analysis started...");
         dailyWorkTimeAnalysisService.processAllDailyWorkTime();
-        System.out.println("Daily work time analysis completed!");
     }
 }

@@ -4,7 +4,7 @@ spring:
   datasource:
     url: "jdbc:mysql://localhost:3306/attendance_tool"
     username: root
-    password: 1
+    password: root
   jpa:
     hibernate:
       naming:
