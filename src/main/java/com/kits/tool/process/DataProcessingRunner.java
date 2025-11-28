@@ -30,6 +30,9 @@ public class DataProcessingRunner implements CommandLineRunner {
     @Autowired
     CalendarService calendarService;
 
+    @Autowired
+    DailyWorkTimeAnalysisService dailyWorkTimeAnalysisService;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -74,5 +77,11 @@ public class DataProcessingRunner implements CommandLineRunner {
         holidayImportService.importFromExcel(new ClassPathResource("input/other_holidays.xlsx"));
 
         holidayImportService.generateWeekendHolidays(LocalDate.now().getYear());
+
+        /*================================= Phân tích thời gian làm việc =================================*/
+
+        System.out.println("Daily work time analysis started...");
+        dailyWorkTimeAnalysisService.processAllDailyWorkTime();
+        System.out.println("Daily work time analysis completed!");
     }
 }
