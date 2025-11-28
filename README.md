@@ -3,7 +3,7 @@
 - Theo tháng
 - Theo quý
 - Theo năm
-- Tùy chỉnh (xemtrên console)
+- Tùy chỉnh (xem trên console)
 
 2. Quản lý file 
 Chỉ giữ 5 file mới nhất mỗi loại báo cáo (NGAY, THANG, QUY, NAM)
