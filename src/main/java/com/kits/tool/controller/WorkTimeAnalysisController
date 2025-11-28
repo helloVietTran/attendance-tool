@@ -1,0 +1,22 @@
+package com.kits.tool.controller;
+
+import com.kits.tool.service.WorkTimeAnalysisService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+
+@RestController
+@RequestMapping("/worktime")
+public class WorkTimeAnalysisController {
+
+    @Autowired
+    private WorkTimeAnalysisService service;
+
+    @GetMapping("/export")
+    public String export(
+            @RequestParam String start,
+            @RequestParam String end) {
+        return service.exportExcel(LocalDate.parse(start), LocalDate.parse(end));
+    }
+}
