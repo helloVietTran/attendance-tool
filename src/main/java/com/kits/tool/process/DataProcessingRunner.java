@@ -35,7 +35,6 @@ public class DataProcessingRunner implements CommandLineRunner {
     @Autowired
     PayrollService payrollService;
 
-
     @Override
     public void run(String... args) throws Exception {
 
