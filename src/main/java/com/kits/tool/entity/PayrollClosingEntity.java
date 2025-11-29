@@ -21,11 +21,11 @@ public class PayrollClosingEntity {
     private LocalDate endDate;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false, insertable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     public int getId() {
