@@ -1,9 +1,11 @@
 package com.kits.tool.service;
 
 import com.kits.tool.entity.CutoffSchedule;
+import com.kits.tool.entity.Employee;
 import com.kits.tool.entity.MonthlyPayroll;
 import com.kits.tool.repository.CutoffScheduleRepository;
 import com.kits.tool.repository.DailyWorkTimeAnalysisRepository;
+import com.kits.tool.repository.EmployeeRepository;
 import com.kits.tool.repository.MonthlyPayrollRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,11 @@ public class PayrollService {
     private final DailyWorkTimeAnalysisRepository dailyRepo;
     private final MonthlyPayrollRepository payrollRepo;
     private final CutoffScheduleRepository cutoffRepo;
+    private final EmployeeRepository employeeRepo;
 
     // Quy ước: 1 ngày công chuẩn = 480 phút (8 tiếng)
     private static final int STANDARD_MINUTES_PER_DAY = 480;
 
-    // B1: Sinh lịch chốt công cả năm (Chạy 1 lần/năm)
     @Transactional
     public void generateCutoffSchedule(int year) {
         List<CutoffSchedule> schedules = new ArrayList<>();
@@ -51,13 +53,13 @@ public class PayrollService {
         cutoffRepo.saveAll(schedules);
         System.out.println("Đã sinh lịch chốt công năm " + year);
     }
-    // B2: Tính công tháng cho nhân viên
-    @Transactional
-    public void calculateMonthlySalary(int month, int year, Integer employeeId) {
+
+    private void calculateMonthlySalary(int month, int year, Integer employeeId) {
         // Lấy ngày chốt công
         CutoffSchedule schedule = cutoffRepo.findByMonthAndYear(month, year)
                 .orElseThrow(() -> new RuntimeException("Chưa có lịch chốt công tháng " + month));
         LocalDate cutoffDate = schedule.getCutoffDate();
+
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth());
 
@@ -128,5 +130,35 @@ public class PayrollService {
             date = date.plusDays(1);
         }
         return count;
+    }
+
+    public void calculateMonthlySalaryForAllEmployee() {
+        List<Employee> employees = employeeRepo.findAll();
+        if (employees.isEmpty()) {
+            System.out.println("Không có bản ghi nào trong bảng Employee.");
+        } else {
+            LocalDate today = LocalDate.now();
+
+            CutoffSchedule schedule = cutoffRepo.findByMonthAndYear(today.getMonthValue(), today.getYear())
+                    .orElse(null);
+
+            if (schedule == null) {
+                System.out.println("Chưa có lịch chốt công cho tháng " + today.getMonthValue() + "/" + today.getYear() + ". Dừng tính lương.");
+                return;
+            }
+
+            LocalDate cutoffDate = schedule.getCutoffDate();
+
+            if (!today.equals(cutoffDate)) {
+                System.out.println("Hôm nay (" + today + ") chưa đến ngày chốt công (" + cutoffDate + "). Dừng tính lương.");
+                return;
+            }
+
+            for (Employee e : employees) {
+                this.calculateMonthlySalary(today.getMonthValue(), today.getYear(), e.getId());
+            }
+
+
+        }
     }
 }

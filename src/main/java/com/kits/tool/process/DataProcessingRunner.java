@@ -32,6 +32,10 @@ public class DataProcessingRunner implements CommandLineRunner {
     @Autowired
     DailyWorkTimeAnalysisService dailyWorkTimeAnalysisService;
 
+    @Autowired
+    PayrollService payrollService;
+
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -56,19 +60,19 @@ public class DataProcessingRunner implements CommandLineRunner {
 
         System.out.println("Payroll process started...");
 
-        ClassPathResource resourcePayroll = new ClassPathResource("input/lich-chot-cong.xlsx");
-        List<YearMonthClosingDTO> excelRows;
-
-        try (InputStream is = resourcePayroll.getInputStream()) {
-            excelRows = EasyExcel.read(is, YearMonthClosingDTO.class, null)
-                    .headRowNumber(2)
-                    .excelType(ExcelTypeEnum.XLSX)
-                    .sheet()
-                    .doReadSync();
-        }
-
-        List<DateClosingDTO> result = payrollClosingService.fromRawtoDate(excelRows);
-        payrollClosingService.saveToDb(result);
+//        ClassPathResource resourcePayroll = new ClassPathResource("input/lich-chot-cong.xlsx");
+//        List<YearMonthClosingDTO> excelRows;
+//
+//        try (InputStream is = resourcePayroll.getInputStream()) {
+//            excelRows = EasyExcel.read(is, YearMonthClosingDTO.class, null)
+//                    .headRowNumber(2)
+//                    .excelType(ExcelTypeEnum.XLSX)
+//                    .sheet()
+//                    .doReadSync();
+//        }
+//
+//        List<DateClosingDTO> result = payrollClosingService.fromRawtoDate(excelRows);
+//        payrollClosingService.saveToDb(result);
 
         /*================================= Ngày nghỉ =================================*/
 
@@ -81,5 +85,9 @@ public class DataProcessingRunner implements CommandLineRunner {
 
         System.out.println("Daily work time analysis started...");
         dailyWorkTimeAnalysisService.processAllDailyWorkTime();
+
+        System.out.println("Daily work time analysis started...");
+        payrollService.generateCutoffSchedule(2025);
+        payrollService.calculateMonthlySalaryForAllEmployee();
     }
 }
