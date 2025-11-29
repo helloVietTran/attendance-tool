@@ -23,7 +23,7 @@ public class LogService {
         for(ExcelRowDTO rawData : rawDatas) {
             ProcessLog dbRawLog = new ProcessLog();
 
-            Optional<ProcessLog> row = processLogRepository.findById(rawData.getId());
+            Optional<ProcessLog> row = processLogRepository.findById(dbRawLog.getId());
             if(row.isEmpty()){
                 dbRawLog.setId(rawData.getId());
                 dbRawLog.setEmpId(rawData.getEmpId());

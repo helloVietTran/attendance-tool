@@ -22,16 +22,18 @@ create table Employee (
 
 Bảng lưu bản ghi điểm danh theo ngày của nhân viên, **lưu checkin và checkout của nhân viên**
 ```
+
 create table AttendanceLog (
     employeeId int not null,
     processLogInId int, 
     processLogOutId int,
     processDate date not null,
-    checkinTime datetime,
-    checkoutTime datetime,
+    checkinTime time,
+    checkoutTime time,
+    
     primary key(employeeId, processDate),
     
-    foreign key (processLogInId) references ProcessLog(id) 
+	foreign key (processLogInId) references ProcessLog(id) 
     on delete cascade
     on update cascade,
     foreign key (processLogOutId) references ProcessLog(id) 
@@ -63,13 +65,14 @@ create table PayRollClosing (
 **Bảng lưu log từ file excel**
 ```
 create table ProcessLog(
-  id int primary key,
+    id int primary key,
     employeeId int,
     processDate date not null,
-    startTime datetime,
-    endTime datetime,
-    checkedTime datetime
+    startTime time,
+    endTime time,
+    checkedTime time
 );
+
 ```
 
 ### 1.2. Output của calendar service
