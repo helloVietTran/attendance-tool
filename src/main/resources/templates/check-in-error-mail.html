@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông báo lỗi Timesheet</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 14px; color: #333; }
+        .container {
+            padding: 15px;
+            border: 2px solid #ddd;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff8dc;
+            border-radius: 5px;
+        }
+        .error-detail { color: #d9534f; font-weight: bold; font-size: 15px; }
+        .section-title { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <p>Dear <b th:text="${username}"></b>, ID: <span th:text="${userId}"></span></p>
+
+    <p>
+        Khung làm việc:
+        <span th:text="${startWorkingShift}"></span> -
+        <span th:text="${endWorkingShift}"></span>
+    </p>
+
+    <br>
+
+    <p>Hệ thống ghi nhận lỗi Timesheet trong ngày:
+        <b th:text="${date}"></b>.
+    </p>
+
+    <!-- CASE 1: Quên check out -->
+    <div th:if="${firstCheckInTime != null
+                and lastCheckInTime != null
+                and firstCheckInTime.equals(lastCheckInTime)}">
+
+        <p class="section-title">⛔ Quên check out / Chỉ có 1 lần check in</p>
+        <p>
+            Lần check in ghi nhận:
+            <span class="error-detail" th:text="${firstCheckInTime}"></span>
+        </p>
+    </div>
+
+    <!-- CASE 2: Đi muộn -->
+    <div th:if="${!(firstCheckInTime.equals(lastCheckInTime))
+                  and lateCheckInMinutes > 0}">
+        <p class="section-title">⛔ Đi muộn</p>
+        <p>
+            Tổng thời gian đi muộn:
+            <span class="error-detail" th:text="${lateCheckInMinutes + ' phút'}"></span>
+        </p>
+    </div>
+
+    <!-- CASE 3: Về sớm  -->
+    <div th:if="${!(firstCheckInTime.equals(lastCheckInTime))
+                  and earlyCheckOutMinutes > 0}">
+        <p class="section-title">⛔ Về sớm</p>
+        <p>
+            Tổng thời gian về sớm:
+            <span class="error-detail" th:text="${earlyCheckOutMinutes + ' phút'}"></span>
+        </p>
+    </div>
+
+
+    <br>
+    <p>Vui lòng chú ý thời gian làm việc để đảm bảo đủ công trong tháng!</p>
+
+</div>
+
+</body>
+</html>
